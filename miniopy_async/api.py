@@ -1406,6 +1406,7 @@ class Minio:  # pylint: disable=too-many-public-methods
         extra_query_params=None,
         tmp_file_path=None,
         session=None,
+        flush=False,
     ):
         """
         Downloads data of an object to file.
@@ -1420,6 +1421,7 @@ class Minio:  # pylint: disable=too-many-public-methods
         :param extra_query_params: Extra query parameters for advanced usage.
         :param tmp_file_path: Path to a temporary file.
         :param session: :class:`aiohttp.ClientSession()` object.
+        :param flush: :class:`bool` wether to flush to disk after writing chunk.
         :return: Object information.
 
         Example::
@@ -1504,11 +1506,13 @@ class Minio:  # pylint: disable=too-many-public-methods
                 async with aiofile.async_open(tmp_file_path, "wb") as tmp_file:
                     async for data in response.content.iter_chunked(n=1024 * 1024):
                         await tmp_file.write(data)
-            
+                        if flush:
+                            await tmp_file.flush()
+
             if os.path.exists(file_path):
                 os.remove(file_path)  # For windows compatibility.
             os.rename(tmp_file_path, file_path)
-            
+
             return stat
         finally:
             pass

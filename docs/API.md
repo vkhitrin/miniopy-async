@@ -1447,6 +1447,7 @@ __Parameters__
 | `extra_query_params` | _dict_                  | Extra query parameters for advanced usage.           |
 | `tmp_file_path`      | _str_                   | Path to a temporary file.                            |
 | `session`            | _aiohttp.ClientSession_ | aiohttp.ClientSession object.                        |
+| `flush`              | _bool_                  | wether to flush to disk after writing chunk.         |
 
 
 __Return Value__
